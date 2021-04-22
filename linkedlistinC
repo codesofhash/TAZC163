@@ -1,0 +1,830 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define NAME_LENGTH 32
+
+typedef struct _NAME
+{
+	char firstName[NAME_LENGTH+1];
+	char middleName[NAME_LENGTH+1];
+	char lastName[NAME_LENGTH+1];
+}NAME;
+
+
+typedef struct node{
+    //NAME rec;
+    NAME rec;
+    struct Node *next;
+}node;
+
+//Represent the head and tail of the singly linked list
+//struct node *head, *tail = NULL;
+node* head = NULL;
+node* tail = NULL;
+
+char c,fName[32],mName[32],lName[32],searchTag[32];
+//addNode() will add a new node to the list
+void addNode();
+void display();
+
+void Create(){
+    printf("Enter First Name of the Person\n");
+    scanf("%s",fName);
+    printf("Enter Middle Name of the Person\n");
+    scanf("%s",mName);
+    printf("Enter Last Name of the Person\n");
+    scanf("%s",lName);
+
+    addNode(fName,mName,lName);
+    display();
+   // sort()
+   // sortFirst();
+
+}
+
+
+void addNode(char fName[32],char mName[32],char lName[32]) {
+    //Create a new node
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    //struct node *next;
+    strcpy(newNode->rec.firstName ,fName);
+    strcpy(newNode->rec.middleName,mName);
+    strcpy(newNode->rec.lastName, lName);
+    newNode->next = NULL;
+
+    //Checks if the list is empty
+    if(head == NULL) {
+        //If list is empty, both head and tail will point to new node
+        head = newNode;
+        tail = newNode;
+    }
+    else {
+        //newNode will be added after tail such that tail's next will point to newNode
+        tail->next = newNode;
+        //newNode will become new tail of the list
+        tail = newNode;
+    }
+}
+
+//display() will display all the nodes present in the list
+void display() {
+    int count =1;
+    //Node current will point to head
+    struct node *current = head;
+
+    if(head == NULL) {
+        printf("List is empty\n");
+
+    }
+    else{
+    printf("\n***************Names of People in the List***************\n");
+    printf("***********************************************************\n");
+    while(current != NULL) {
+        //Prints each node by incrementing pointer
+
+        printf("\t\t\t%d %s %s %s\n",count, current->rec.firstName,current->rec.middleName,current->rec.lastName);
+        current = current->next;
+        count =count+1;
+    }
+    printf("***********************************************************\n");
+    }
+
+}
+
+void displayPosition(){
+
+    int position;
+    printf("Which position do you want to see?\n");
+    scanf("%d",&position);
+
+    int flag=CheckEmpty();
+     if(flag==1)
+     {
+      int count=0,flag1=0,i;
+      struct node *temp=head;
+
+
+       if(position==1)
+       {
+        head=temp->next;
+        //free(temp);
+        //return;
+       }
+       for(i=0;i<position-1;i++)
+       {
+            temp=temp->next;
+       }
+       printf("\n***************The person you were eager to see***************\n");
+        printf("***********************************************************\n");
+       printf("\t\t\t%d %s %s %s\n",position, temp->rec.firstName,temp->rec.middleName,temp->rec.lastName);
+        printf("***********************************************************\n");
+     }
+     else
+     {
+      printf("List is empty\n");
+     }
+
+
+
+
+
+}
+
+void displayMenu(){
+int choice;
+printf("\n***************Select What you want to Dislay***************\n");
+
+                printf("\n\t\t\t1.Individual Data    \n");
+                printf("\t\t\t2.Whole List    \n");
+printf("\n----------------------------------------------------------------------\n");
+printf("Enter your choice:\t");
+scanf("%d",&choice);
+switch(choice)
+             {
+                case 1:
+                {
+                 displayPosition();
+                 //InsertAtBeginning(fName,mName);
+                  break;
+                }
+
+
+                case 2:
+                {
+                 display();
+                  break;
+                }
+
+             }
+
+
+}
+
+void sortFirst(){
+
+const char *str[50];
+
+int count =0;
+struct node *current = head;
+ if(head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+else
+    {
+       while(current != NULL)
+       {
+            str[count] = current->rec.firstName;
+            //printf("%s",str[count]);
+            count=count+1;
+            current = current->next;
+       }
+    }
+
+char *t;
+int i,j;
+//printf("count=%d\n",count);
+    for (i=0; i<count-1; i++)
+    { //printf("i=%d\n",i);
+
+       for (j=i+1; j<count; j++)
+       {
+           //printf("j=%d\n",j);
+
+           if ((strcmp(str[i],str[j]))>0)
+           {
+               t = str[i];
+               str[i]= str[j];
+               str[j]=t;
+
+           }
+       }
+    }
+
+for (i=0; i<count; i++)
+{
+printf("\n%s",str[i]) ;
+}
+}
+
+void sortMiddle(){
+
+const char *str[50];
+//const char *str[50]={"VIRENDRA","CIJISH","GEORGE","KIRAN","RAJESH"};
+//char *str[50]={"HASHIR","CIJISH","GEORGE","KIRAN","RAJESH"};
+int count =0;
+struct node *current = head;
+ if(head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+else
+    {
+       while(current != NULL)
+       {
+            str[count] = current->rec.middleName;
+            //printf("%s",str[count]);
+            count=count+1;
+            current = current->next;
+       }
+    }
+
+char *t;
+int i,j;
+//printf("count=%d\n",count);
+    for (i=0; i<count-1; i++)
+    { //printf("i=%d\n",i);
+
+       for (j=i+1; j<count; j++)
+       {
+          // printf("j=%d\n",j);
+
+           if ((strcmp(str[i],str[j]))>0)
+           {
+               t = str[i];
+               str[i]= str[j];
+               str[j]=t;
+
+           }
+       }
+    }
+
+for (i=0; i<count; i++)
+{
+printf("\n%s",str[i]) ;
+}
+}
+
+void sortLast(){
+
+const char *str[50];
+//const char *str[50]={"VIRENDRA","CIJISH","GEORGE","KIRAN","RAJESH"};
+//char *str[50]={"HASHIR","CIJISH","GEORGE","KIRAN","RAJESH"};
+int count =0;
+struct node *current = head;
+ if(head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+else
+    {
+       while(current != NULL)
+       {
+            str[count] = current->rec.lastName;
+            //printf("%s",str[count]);
+            count=count+1;
+            current = current->next;
+       }
+    }
+
+char *t;
+int i,j;
+//printf("count=%d\n",count);
+    for (i=0; i<count-1; i++)
+    { //printf("i=%d\n",i);
+
+       for (j=i+1; j<count; j++)
+       {
+           //printf("j=%d\n",j);
+
+           if ((strcmp(str[i],str[j]))>0)
+           {
+               t = str[i];
+               str[i]= str[j];
+               str[j]=t;
+
+           }
+       }
+    }
+
+for (i=0; i<count; i++)
+{
+printf("\n%s",str[i]) ;
+}
+}
+
+void sort(){
+    int choice;
+
+    printf("\n 1.First Name     \n");
+    printf(" 2.Middle Name    \n");
+    printf(" 3.Last Name\n");
+    printf("Enter your choice:\t");
+    scanf("%d",&choice);
+     switch(choice)
+             {
+                case 1:
+                {
+                 sortFirst();
+                 //InsertAtBeginning(fName,mName);
+                  break;
+                }
+
+
+                case 2:
+                {
+                 sortMiddle();
+                  break;
+                }
+
+                case 3:
+                {
+                 sortLast();
+                  break;
+                }
+
+             }
+
+
+
+}
+
+void searchFirstName(){
+printf("\nEnter the First Name of the Person you want to search\n");
+scanf("%s",fName);
+
+int i,count =0;
+char string1[32];
+char string2[32];
+
+strcpy ( string1, fName ) ;
+
+
+
+struct node *current = head;
+ if(head == NULL) {
+        printf("\nList is empty to search for\n");
+       // main();
+    }
+else
+    {
+       while(current != NULL)
+       {
+            strcpy ( string2, current->rec.firstName ) ;
+            //string2 = current->rec.firstName;
+
+            i = strcmp ( string1, string2) ;
+
+            if (i==0){
+                //printf("We will break now");
+                printf("\nDATA FOUND\n");
+                printf("\nFirst Name: %s\nMiddle Name: %s\nLast Name: %s\n",current->rec.firstName,current->rec.middleName,current->rec.lastName);
+                break;
+            }
+            current = current->next;
+
+            //printf("%d",i);
+       }
+    }
+
+}
+
+void searchMiddleName(){
+printf("\nEnter the Middle Name of the Person you want to search\n");
+scanf("%s",mName);
+
+int i,count =0;
+char string1[32];
+char string2[32];
+
+strcpy ( string1, mName ) ;
+
+
+
+struct node *current = head;
+ if(head == NULL) {
+        printf("\nList is empty to search for\n");
+       // main();
+    }
+else
+    {
+       while(current != NULL)
+       {
+            strcpy ( string2, current->rec.middleName ) ;
+            //string2 = current->rec.firstName;
+
+            i = strcmp ( string1, string2) ;
+
+            if (i==0){
+                //printf("We will break now");
+                printf("\nDATA FOUND\n");
+                printf("\nFirst Name: %s\nMiddle Name: %s\nLast Name: %s\n",current->rec.firstName,current->rec.middleName,current->rec.lastName);
+                break;
+            }
+            current = current->next;
+
+            //printf("%d",i);
+       }
+    }
+}
+
+void searchLastName(){
+printf("\nEnter the Last Name of the Person you want to search\n");
+scanf("%s",lName);
+
+int i,count =0;
+char string1[32];
+char string2[32];
+
+strcpy ( string1, lName ) ;
+
+
+
+struct node *current = head;
+ if(head == NULL) {
+        printf("\nList is empty to search for\n");
+       // main();
+    }
+else
+    {
+       while(current != NULL)
+       {
+            strcpy ( string2, current->rec.lastName ) ;
+            //string2 = current->rec.firstName;
+
+            i = strcmp ( string1, string2) ;
+
+            if (i==0){
+                //printf("We will break now");
+                printf("\nDATA FOUND\n");
+                printf("\nFirst Name: %s\nMiddle Name: %s\nLast Name: %s\n",current->rec.firstName,current->rec.middleName,current->rec.lastName);
+                break;
+            }
+            current = current->next;
+
+            //printf("%d",i);
+       }
+    }
+}
+
+void search(){
+    int choice;
+    printf("\n***************By What Criteria do you want to search?***************\n");
+    printf("\n\t\t\t1.First Name     \n");
+    printf("\t\t\t2.Middle Name    \n");
+    printf("\t\t\t3.Last Name\n");
+    printf("\n**********************************************************************\n");
+    printf("Enter your choice:\t");
+    scanf("%d",&choice);
+     switch(choice)
+             {
+                case 1:
+                {
+                 searchFirstName();
+                 //InsertAtBeginning(fName,mName);
+                  break;
+                }
+
+
+                case 2:
+                {
+                 searchMiddleName();
+                  break;
+                }
+
+                case 3:
+                {
+                    searchLastName();
+                  break;
+                }
+
+             }
+
+
+
+}
+
+void export(){
+    FILE * fptr;
+    fptr = fopen("TAZC163-HASH-ASSIGNMENT.txt", "w");
+   // struct Node *iterator = petRecord;
+    struct node *current = head;
+
+    if(fptr==NULL)
+    {
+        printf("Error\n");
+    }
+
+    else
+    {
+        while(current != NULL)
+        {
+            fprintf(fptr, "%s\t%s\t%s\n", current->rec.firstName,current->rec.middleName,current->rec.lastName);
+            current = current->next;
+        }
+    }
+
+    fclose(fptr);
+    printf("File Exported Succesfully");
+
+}
+
+void import(){
+   // removeAll();
+     FILE *fp = fopen("TAZC163-HASH-ASSIGNMENT.txt", "r");
+      if(fp == NULL) {
+         perror("Unable to open file!");
+          exit(1);
+      }
+
+     char chunk[128];
+
+     while(fgets(chunk, sizeof(chunk), fp) != NULL) {
+         fputs(chunk, stdout);
+        // fputs("|*\n", stdout);  // marker string used to show where the content of the chunk array has ended
+     }
+
+     fclose(fp);
+
+}
+
+void eximMenu(){
+    int choice;
+printf("\n***************EXPORT // IMPORT MENU***************\n");
+printf("\n\t\t\t1.Export as the Text File    \n");
+printf("\t\t\t2.Import from the Text File    \n");
+printf("\n----------------------------------------------------------------------\n");
+printf("Enter your choice:\t");
+scanf("%d",&choice);
+
+switch(choice)
+             {
+                case 1:
+                {
+                 export();
+                 break;
+                }
+
+
+                case 2:
+                {
+                 import();
+                  break;
+                }
+
+
+
+
+             }
+return;
+}
+
+void InsertAtPosition(){
+    int position;
+    printf("At Which Position do you want to Enter Data?\n");
+    scanf("%d",&position);
+
+   //struct node *newNode = (struct node*)malloc(sizeof(struct node));
+   struct node *newNode,*temp;
+   int count,flag;
+   newNode = (struct node*)malloc(sizeof(struct node));
+
+
+    printf("Enter First Name of the Person\n");
+    scanf("%s",fName);
+    printf("Enter Middle Name of the Person\n");
+    scanf("%s",mName);
+    printf("Enter Last Name of the Person\n");
+    scanf("%s",lName);
+
+   strcpy(newNode->rec.firstName ,fName);
+   strcpy(newNode->rec.middleName,mName);
+   strcpy(newNode->rec.lastName, lName);
+   temp=head;
+   flag=CheckEmpty();
+   if(flag==1)
+   {
+    int flag1=0;
+    count=0;
+      while(temp!=NULL)
+        {
+         if(count==position-2)
+          {
+        flag1=1;
+        newNode->next=temp->next;
+        temp->next=newNode;
+       }
+       else
+    {
+        temp=temp->next;
+
+       }
+       count++;
+          }
+            if(flag1==0)
+            {
+        printf("Entered Position Not available\n");
+            }
+      else
+      {
+       printf("Given Name is inserted at position %d successfully\n",position);
+      }
+     }
+     else
+     {
+      printf("List is Empty\n");
+     }
+
+
+}
+
+void removeMenu(){
+
+int choice;
+printf("\n***************WHAT DO YOU DELETE***************\n");
+
+                printf("\n\t\t\t1.Individual Data    \n");
+                printf("\t\t\t2.Whole List    \n");
+printf("\n----------------------------------------------------------------------\n");
+printf("Enter your choice:\t");
+scanf("%d",&choice);
+
+switch(choice)
+             {
+                case 1:
+                {
+                 RemoveAtPosition();
+                 //InsertAtBeginning(fName,mName);
+                  break;
+                }
+
+
+                case 2:
+                {
+                 removeAll();
+                  break;
+                }
+
+             }
+
+}
+
+void RemoveAtPosition(){
+    int position;
+    printf("Which position do you want to Delete the Data of?\n");
+    scanf("%d",&position);
+
+    int flag=CheckEmpty();
+     if(flag==1)
+     {
+      int count=0,flag1=0,i;
+      struct node *temp=head;
+
+
+       if(position==1)
+       {
+        head=temp->next;
+        free(temp);
+        return;
+       }
+       for(i=0;i<position-2;i++)
+       {
+            temp=temp->next;
+       }
+       struct node *temp1=temp->next;
+       temp->next=temp1->next;
+       free(temp1);
+
+       display();
+
+     }
+     else
+     {
+      printf("List is empty\n");
+     }
+
+}
+
+
+void removeAll(){
+
+   struct node* current = head;
+   struct node* next;
+
+
+   while (current != NULL)
+   {
+       next = current->next;
+       free(current);
+       current = next;
+   }
+
+    head= NULL;
+
+}
+
+int CheckEmpty(){
+ if(head==NULL)
+ return 0;
+ else
+ return 1;
+}
+
+int countNodes(){
+
+    int count =0;
+    //Node current will point to head
+    struct node *current = head;
+
+    if(head == NULL) {
+        printf("List is empty\n");
+
+    }
+    else{
+    printf("\n***************Node Numbers***************\n");
+    printf("********************************************\n");
+    while(current != NULL) {
+        //Prints each node by incrementing pointer
+        current = current->next;
+        count =count+1;
+    }
+    printf("\t\t\tYour List has %d nodes\n",count);
+    printf("**********************************************\n");
+    }
+
+}
+
+
+
+void main(){
+
+  char ch;
+  do {
+   int choice;
+//char c,fName[32],mName[32],lName[32];
+
+                printf("\n***************HASHIR HUSSAIN'S LINKED LIST ASSIGNMENT***************\n");
+
+                printf("\n\t\t\t1.Create \\ Add New    \n");
+                printf("\t\t\t2.Display    \n");
+                printf("\t\t\t3.Insert\n");
+                printf("\t\t\t4.Search  \n");
+                printf("\t\t\t5.Delete       \n");
+                printf("\t\t\t6.Copy      \n");
+                printf("\t\t\t7.Export \\ Import to File       \n");
+                printf("\t\t\t8.Sort     \n");
+                printf("\t\t\t9.Count       \n");
+                printf("\n----------------------------------------------------------------------\n");
+                printf("Enter your choice:\t");
+                scanf("%d",&choice);
+
+                 switch(choice)
+             {
+                case 1:
+                {
+                 Create();
+                 //InsertAtBeginning(fName,mName);
+                  break;
+                }
+
+
+                case 2:
+                {
+                 displayMenu();
+                  break;
+                }
+
+                case 3:
+                {
+                 InsertAtPosition();
+                  break;
+                }
+
+                case 4:
+                {
+                 search();
+                  break;
+                }
+
+                case 5:
+                {
+                 removeMenu();
+                  break;
+                }
+
+                case 7:
+                {
+                 eximMenu();
+                  break;
+                }
+                case 8:
+                {
+                sort();
+                break;
+                }
+
+                case 9:
+                {
+                countNodes();
+                break;
+                }
+
+             }
+printf ("Do you want to see the Main Menu again? Y/N: ");
+scanf (" %c", &ch);
+}
+while (ch == 'y' || ch == 'Y');
+}
+  // return 0;
+
